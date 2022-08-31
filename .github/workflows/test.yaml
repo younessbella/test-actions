@@ -28,4 +28,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Echoing
-        run: echo ${{ env.ENVIRONMENT} }
+        run: echo ${{ env.ENVIRONMENT }}
