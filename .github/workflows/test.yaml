@@ -22,17 +22,17 @@ on:
 name: Deploy
 env:
   ENVIRONMENT: >-
-    ${{ ( ( github.event_name == 'release' && github.event.release.prerelease != true ) || ( contains( github.event.inputs.env, 'prod' ) ) && 'prod' ) ||
-        ( ( github.event_name == 'release' && github.event.release.prerelease == true ) || ( contains( github.event.inputs.env, 'qa' ) ) && 'qa' ) ||
-        ( (github.event_name == 'push') || ( contains( github.event.inputs.env, 'dev' ) ) && 'dev') }}
+    ${{ ( ( github.event_name == 'release' && github.event.release.prerelease != true ) || ( contains( github.event.inputs.env, 'prod' ) == 'true' ) && 'prod' ) ||
+        ( ( github.event_name == 'release' && github.event.release.prerelease == true ) || ( contains( github.event.inputs.env, 'qa' ) == 'true' ) && 'qa' ) ||
+        ( (github.event_name == 'push') || ( contains( github.event.inputs.env, 'dev' ) == 'true' ) && 'dev') }}
   URL: >-
-    ${{ ( ( github.event_name == 'release' && github.event.release.prerelease != true ) || ( contains( github.event.inputs.env, 'prod' ) ) && 'https://my.premise.com' ) ||
-        ( ( github.event_name == 'release' && github.event.release.prerelease == true ) || ( contains( github.event.inputs.env, 'qa' ) ) && 'https://qa.my.premise.com' ) ||
-        ( (github.event_name == 'push') || ( contains( github.event.inputs.env, 'dev' ) ) && 'https://dev.my.premise.com') }}
+    ${{ ( ( github.event_name == 'release' && github.event.release.prerelease != true ) || ( contains( github.event.inputs.env, 'prod' ) == 'true' ) && 'https://my.premise.com' ) ||
+        ( ( github.event_name == 'release' && github.event.release.prerelease == true ) || ( contains( github.event.inputs.env, 'qa' ) == 'true' ) && 'https://qa.my.premise.com' ) ||
+        ( (github.event_name == 'push') || ( contains( github.event.inputs.env, 'dev' ) == 'true' ) && 'https://dev.my.premise.com') }}
 jobs:
   setup:
     name: Setup
     runs-on: ubuntu-latest
     steps:
       - name: Echoing
-        run: echo "${{ env.ENVIRONMENT }} - ${{ env.URL }}""
+        run: echo "${{ env.ENVIRONMENT }} - ${{ env.URL }}"
