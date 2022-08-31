@@ -22,12 +22,17 @@ on:
 name: Deploy
 env:
   ENVIRONMENT: >-
-    ${{ (github.event_name == 'push' && 'dev') || 
-        (github.event_name == 'release' && (github.event.release.prerelease == true && 'qa' || 'prod')) }}
+    ${{ ( ( github.event_name == 'release' && github.event.release.prerelease != true ) || ( contains( github.event.inputs.env, 'prod' ) ) && 'prod' ) ||
+        ( ( github.event_name == 'release' && github.event.release.prerelease == true ) || ( contains( github.event.inputs.env, 'qa' ) ) && 'qa' ) ||
+        ( (github.event_name == 'push') || ( contains( github.event.inputs.env, 'dev' ) ) && 'dev') }}
+  URL: >-
+    ${{ ( ( github.event_name == 'release' && github.event.release.prerelease != true ) || ( contains( github.event.inputs.env, 'prod' ) ) && 'https://my.premise.com' ) ||
+        ( ( github.event_name == 'release' && github.event.release.prerelease == true ) || ( contains( github.event.inputs.env, 'qa' ) ) && 'https://qa.my.premise.com' ) ||
+        ( (github.event_name == 'push') || ( contains( github.event.inputs.env, 'dev' ) ) && 'https://dev.my.premise.com') }}
 jobs:
   setup:
     name: Setup
     runs-on: ubuntu-latest
     steps:
       - name: Echoing
-        run: echo ${{ env.ENVIRONMENT }}
+        run: echo "${{ env.ENVIRONMENT }} - ${{ env.URL }}""
