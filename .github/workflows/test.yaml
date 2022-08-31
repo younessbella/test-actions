@@ -1,0 +1,31 @@
+on:
+  push:
+    branches: [main]
+  release:
+    types: [prereleased, released]
+  workflow_dispatch:
+    inputs:
+      apps:
+        description: Comma-separated list of applications to build
+        required: true
+        type: string
+      env:
+        default: dev
+        description: Environment to deploy application
+        required: true
+        type: string
+      ref:
+        default: main
+        description: Branch, tag, or SHA to deploy application from
+        required: true
+        type: string
+name: Deploy
+env:
+  ENVIRONMENT: ${{ github.event_name }}
+jobs:
+  setup:
+    name: Setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echoing
+        run: echo ${{ env.ENVIRONMENT} }
