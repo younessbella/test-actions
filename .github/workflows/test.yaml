@@ -21,7 +21,7 @@ on:
         type: string
 name: Deploy
 env:
-  ENVIRONMENT: github.event_name == 'push' && 'dev' || github.event_name == 'published' && github.event.release.prerelease == true && 'qa' || github.event_name == 'published' && 'prod'
+  ENVIRONMENT: ${{ github.event_name == 'push' && 'dev' || github.event_name == 'published' && github.event.release.prerelease == true && 'qa' || github.event_name == 'published' && 'prod' }}
 jobs:
   setup:
     name: Setup
