@@ -39,10 +39,10 @@ jobs:
           if [ -n "${{ inputs.env }}" ]; then \
             ENVIRONMENT_NAME="${{ inputs.env }}"; \
           elif [ "${{ github.event_name == 'release' }}" = true ]; then \
-            if [ "${{ github.event.release.prerelease == 'true' }}" = true ]; then \
-              ENVIRONMENT_NAME="qa"; \
-            else \
+            if [ "${{ github.event.release.prerelease != true }}" = true ]; then \
               ENVIRONMENT_NAME="prod"; \
+            else \
+              ENVIRONMENT_NAME="qa"; \
             fi; \
           else \
             ENVIRONMENT_NAME="dev"; \
