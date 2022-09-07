@@ -35,4 +35,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Echoing
-        run: echo "${{ env.ENVIRONMENT }} - ${{ env.URL }}"
+        run: |-
+          if [ -n "${{ inputs.env }}" ]; then \
+            ENVIRONMENT_NAME="${{ inputs.env }}"; \
+          elif [ "${{ github.event_name == 'release' }}" = true ]; then \
+            if [ "${{ github.event.release.prerelease == 'true' }}" = true ]; then \
+              ENVIRONMENT_NAME="qa"; \
+            else \
+              ENVIRONMENT_NAME="prod"; \
+            fi; \
+          else \
+            ENVIRONMENT_NAME="dev"; \
+          fi;
+
+          echo "ENVIRONMENT_NAME=$ENVIRONMENT_NAME" >> $GITHUB_ENV;
+      - name: Echo
+        run: echo ${{ env.ENVIRONMENT_NAME }}
